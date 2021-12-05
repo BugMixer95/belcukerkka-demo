@@ -1,0 +1,18 @@
+﻿@page
+@model WebApplication.Pages.Admin.Candies.DeleteModel
+@{
+    ViewData["Title"] = "Удалить сладость";
+}
+
+<div class="cs-container-sm">
+    <div class="cs-admin cs-font-primary">
+        <h2 class="cs-text-center cs-admin-header cs-font-red cs-dashed">@ViewData["Title"]?</h2>
+        <div class="cs-text-center">
+            <input hidden asp-for="Candy.Id" />
+            <form method="post">
+                <button class="cs-btn cs-btn-danger">УДАЛИТЬ</button>
+                <a class="cs-btn cs-btn-secondary" asp-page="/Admin/Candies/Index">НАЗАД</a>
+            </form>
+        </div>
+    </div>
+</div>

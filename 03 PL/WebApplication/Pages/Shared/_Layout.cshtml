@@ -1,0 +1,105 @@
+﻿@{
+    bool isAuthorized = User.Identity.IsAuthenticated;
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Белцукерка</title>
+
+    @await RenderSectionAsync("Canonical", required: false)
+
+    <link rel="icon" href="~/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/candyshop.css" />
+    <link rel="stylesheet" href="~/css/belcukerka.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <header class="cs-navbar cs-font-primary">
+        <div class="cs-navbar-container">
+            <div class="cs-navbar__body">
+                <a class="cs-navbar__logo" asp-page="/Index">
+                    <img src="~/pdf-docs/images/logo_Belcukerka.png" alt="logo">
+                </a>
+                <div class="cs-navbar__burger">
+                    <span></span>
+                </div>
+                <nav class="cs-navbar__menu">
+                    <ul class="cs-navbar__list">
+                        <li>
+                            <a class="cs-navbar__link" asp-page="/Index">Главная</a>
+                        </li>
+                        <li>
+                            <a class="cs-navbar__link" asp-page="/Catalog/Index">Каталог</a>
+                        </li>
+                        <li>
+                            <a class="cs-navbar__link" asp-page="/Shipment">Доставка и оплата</a>
+                        </li>
+                        <li>
+                            <a class="cs-navbar__link" asp-page="/About">О нас</a>
+                        </li>
+                        @if (isAuthorized)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="cs-navbar__link cs-font-red dropdown-toggle" id="dropdownMenuButton1"
+                                   data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer">
+                                    Администрирование
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li><a class="cs-font-red dropdown-item" asp-page="/Admin/Orders/Index">ЗАКАЗЫ</a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="cs-font-red dropdown-item" asp-page="/Admin/Boxes/Index">ПОДАРКИ</a></li>
+                                    <li><a class="cs-font-red dropdown-item" asp-page="/Admin/Candies/Index">СЛАДОСТИ</a></li>
+                                    <li><a class="cs-font-red dropdown-item" asp-page="/Admin/Compositions/Index">СОСТАВЫ</a></li>
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+                @if (!isAuthorized)
+                {
+                    <div class="cs-navbar__contacts">
+                        <a href="#" class="tel-mts">+375 (XX) XXX-XX-XX</a>
+                        <a href="#" class="tel-a1">+375 (XX) XXX-XX-XX</a>
+                        <a href="#" class="mail">demo@belcukerka.demo</a>
+                    </div>
+                }
+                <a class="cs-navbar__cart" asp-page="/Cart" data-cs-empty="true">
+                    <img src="~/icons/cart.png" alt="cart">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    @Html.AntiForgeryToken()
+
+    @RenderBody()
+
+    <div class="contact">
+        <div class="contact__main"></div>
+        <div class="contact__buttons">
+            <a href="#" class="contact__telegram" target="_blank"></a>
+            <a href="#" class="contact__viber" target="_blank"></a>
+            <a href="#" class="contact__phone" target="_blank"></a>
+        </div>
+    </div>
+
+    <footer class="cs-main-footer cs-font-primary">
+        <div class="cs-main-footer-container">
+            <p>Белцукерка, 2021 &copy; Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/js/candyshop/common.min.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

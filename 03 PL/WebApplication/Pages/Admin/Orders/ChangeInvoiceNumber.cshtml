@@ -1,0 +1,25 @@
+﻿@page
+@model WebApplication.Pages.Admin.Orders.ChangeInvoiceNumberModel
+@{
+    ViewData["Title"] = "Изменить номер документа";
+}
+
+<div class="cs-container">
+    <div class="cs-admin cs-font-primary">
+        <h2 class="cs-text-center cs-admin-header cs-font-red cs-dashed">@ViewData["Title"]</h2>
+
+        <form method="post">
+            <input hidden asp-for="Order.Id" />
+
+            <div class="cs-form">
+                <label class="cs-form-label" asp-for="InvoiceNumber"></label>
+                <input type="number" class="cs-form-control" asp-for="InvoiceNumber" placeholder="Введите номер документа"/>
+            </div>
+
+            <div class="cs-button-container cs-text-center">
+                <button type="submit" class="cs-btn cs-btn-primary" id="submit-btn">СОХРАНИТЬ</button>
+                <a asp-page="/Admin/Orders/Index" class="cs-btn cs-btn-primary">НАЗАД</a>
+            </div>
+        </form>
+    </div>
+</div>

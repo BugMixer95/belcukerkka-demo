@@ -1,0 +1,18 @@
+﻿@page
+@model WebApplication.Pages.Admin.Boxes.DeleteChildModel
+@{
+    ViewData["Title"] = "Удалить подарок";
+}
+
+<div class="cs-container-sm">
+    <div class="cs-admin cs-font-primary">
+        <h2 class="cs-text-center cs-admin-header cs-font-red cs-dashed">@ViewData["Title"]?</h2>
+        <div class="cs-text-center">
+            <input hidden asp-for="Box.Id" />
+            <form method="post">
+                <button class="cs-btn cs-btn-danger">УДАЛИТЬ</button>
+                <a class="cs-btn cs-btn-secondary" asp-page="/Admin/Boxes/Index">НАЗАД</a>
+            </form>
+        </div>
+    </div>
+</div>

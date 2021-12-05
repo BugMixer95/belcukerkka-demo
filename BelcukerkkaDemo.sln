@@ -1,0 +1,80 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31605.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 PL", "03 PL", "{08A2F35F-51BE-4193-8EAF-3CE905601F27}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 BL", "02 BL", "{C4786576-5F70-4F5F-9362-9134B2A7FD75}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 DAL", "01 DAL", "{1B4C57A3-DD30-4587-893F-8BA309749CC5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication", "03 PL\WebApplication\WebApplication.csproj", "{0F615BF6-25DF-4D41-AC91-5236F7F37D6C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9039A043-B900-479A-8541-C02F9C154FAE} = {9039A043-B900-479A-8541-C02F9C154FAE}
+		{4F3A4D86-E3FA-4F4D-B22A-15FE0B20A9FB} = {4F3A4D86-E3FA-4F4D-B22A-15FE0B20A9FB}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Belcukerkka.Models", "01 DAL\Belcukerkka.Models\Belcukerkka.Models.csproj", "{D6CA54EE-8606-4027-95C1-AB6F384FC1D3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Belcukerkka.Repositories", "01 DAL\Belcukerkka.Repositories\Belcukerkka.Repositories.csproj", "{51762A11-0374-422F-9D43-03A29EA75533}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Belcukerkka.Services", "02 BL\Belcukerkka.Extras\Belcukerkka.Services.csproj", "{4B102EE6-C1C2-4928-BA6E-FD6AD3D6CD79}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Belcukerkka.TelegramNotifier", "02 BL\Belcukerkka.TelegramNotifier\Belcukerkka.TelegramNotifier.csproj", "{4F3A4D86-E3FA-4F4D-B22A-15FE0B20A9FB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Belcukerkka.Security", "02 BL\Belcukerkka.Security\Belcukerkka.Security.csproj", "{BD7D5C6E-2B44-4F44-BBF7-E15AD159B366}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Belcukerkka.PdfGenerator", "02 BL\Belcukerkka.PdfGenerator\Belcukerkka.PdfGenerator.csproj", "{9039A043-B900-479A-8541-C02F9C154FAE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F615BF6-25DF-4D41-AC91-5236F7F37D6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F615BF6-25DF-4D41-AC91-5236F7F37D6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F615BF6-25DF-4D41-AC91-5236F7F37D6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F615BF6-25DF-4D41-AC91-5236F7F37D6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6CA54EE-8606-4027-95C1-AB6F384FC1D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6CA54EE-8606-4027-95C1-AB6F384FC1D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6CA54EE-8606-4027-95C1-AB6F384FC1D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6CA54EE-8606-4027-95C1-AB6F384FC1D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51762A11-0374-422F-9D43-03A29EA75533}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51762A11-0374-422F-9D43-03A29EA75533}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51762A11-0374-422F-9D43-03A29EA75533}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51762A11-0374-422F-9D43-03A29EA75533}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B102EE6-C1C2-4928-BA6E-FD6AD3D6CD79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B102EE6-C1C2-4928-BA6E-FD6AD3D6CD79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B102EE6-C1C2-4928-BA6E-FD6AD3D6CD79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B102EE6-C1C2-4928-BA6E-FD6AD3D6CD79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F3A4D86-E3FA-4F4D-B22A-15FE0B20A9FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F3A4D86-E3FA-4F4D-B22A-15FE0B20A9FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F3A4D86-E3FA-4F4D-B22A-15FE0B20A9FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F3A4D86-E3FA-4F4D-B22A-15FE0B20A9FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD7D5C6E-2B44-4F44-BBF7-E15AD159B366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD7D5C6E-2B44-4F44-BBF7-E15AD159B366}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD7D5C6E-2B44-4F44-BBF7-E15AD159B366}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD7D5C6E-2B44-4F44-BBF7-E15AD159B366}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9039A043-B900-479A-8541-C02F9C154FAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9039A043-B900-479A-8541-C02F9C154FAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9039A043-B900-479A-8541-C02F9C154FAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9039A043-B900-479A-8541-C02F9C154FAE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0F615BF6-25DF-4D41-AC91-5236F7F37D6C} = {08A2F35F-51BE-4193-8EAF-3CE905601F27}
+		{D6CA54EE-8606-4027-95C1-AB6F384FC1D3} = {1B4C57A3-DD30-4587-893F-8BA309749CC5}
+		{51762A11-0374-422F-9D43-03A29EA75533} = {1B4C57A3-DD30-4587-893F-8BA309749CC5}
+		{4B102EE6-C1C2-4928-BA6E-FD6AD3D6CD79} = {C4786576-5F70-4F5F-9362-9134B2A7FD75}
+		{4F3A4D86-E3FA-4F4D-B22A-15FE0B20A9FB} = {C4786576-5F70-4F5F-9362-9134B2A7FD75}
+		{BD7D5C6E-2B44-4F44-BBF7-E15AD159B366} = {C4786576-5F70-4F5F-9362-9134B2A7FD75}
+		{9039A043-B900-479A-8541-C02F9C154FAE} = {C4786576-5F70-4F5F-9362-9134B2A7FD75}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D2A20A55-CC9F-49C5-B2C8-88BD40585427}
+	EndGlobalSection
+EndGlobal

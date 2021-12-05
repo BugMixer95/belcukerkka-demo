@@ -1,0 +1,84 @@
+﻿@page
+@model WebApplication.Pages.Admin.Boxes.EditChildModel
+@{
+    bool isEdit = Model.Box.Id > 0;
+    ViewData["Title"] = isEdit ? "Редактировать подарок" : "Новый подарок";
+
+    var fullPrice = isEdit ? (Model.Box.Price * 1.25) : 0;
+}
+
+<div class="cs-container-lg">
+    <div class="cs-admin cs-font-primary">
+        <h2 class="cs-text-center cs-admin-header cs-font-red cs-dashed">@ViewData["Title"]</h2>
+        <form method="post" class="mt-3" enctype="multipart/form-data" asp-page-handler="OnPost">
+            @Html.AntiForgeryToken()
+
+            <input hidden id="box-parent-id" asp-for="Box.BoxParentId" />
+
+            @if (isEdit)
+            {
+                <input hidden id="box-id" asp-for="Box.Id" />
+            }
+
+            <div class="cs-form">
+                <label class="cs-form-label" asp-for="BoxParentName">Название</label>
+                <div>
+                    <input disabled type="text" class="cs-form-control" asp-for="BoxParentName">
+                </div>
+                <label class="cs-form-label cs-required" asp-for="Box.Price"></label>
+                <div>
+                    <input type="number" id="price-input" class="cs-form-control input-decimal" placeholder="Введите цену подарка" asp-for="Box.Price">
+                    <span class="cs-font-red cs-text-center" asp-validation-for="Box.Price"></span>
+                </div>
+                <label class="cs-form-label" asp-for="Box.FullPrice"></label>
+                <div>
+                    <input readonly type="number" id="full-price-input" class="cs-form-control" asp-for="Box.FullPrice">
+                    <span class="cs-font-red cs-text-center" asp-validation-for="Box.FullPrice"></span>
+                </div>
+                <label class="cs-form-label cs-required" asp-for="Box.Composition.Weight">Вес подарка</label>
+                <div>
+                    @if (isEdit)
+                    {
+                        <input disabled class="cs-form-control" type="number" asp-for="Box.Composition.Weight" />
+                    }
+                    else
+                    {
+                        <select id="weight-select" class="custom-select mr-sm-2"
+                                asp-for="Box" asp-items="Model.WeightValues">
+                            <option disabled selected class="font-weight-bold" value="-1">Выберите вес</option>
+                        </select>
+                    }
+                    <span class="cs-font-red cs-text-center" asp-validation-for="Box.Composition.Weight"></span>
+                </div>
+                <label class="cs-form-label cs-required" asp-for="Box.Composition.WeightTypeId">Тип состава</label>
+                <div>
+                    @if (isEdit)
+                    {
+                        <input hidden asp-for="Box.CompositionId" />
+                        <input disabled class="cs-form-control" type="text" value="@Model.Box.Composition.WeightType.Name" />
+                    }
+                    else
+                    {
+                        <select id="weight-type-name-select" class="custom-select mr-sm-2"
+                                asp-for="Box.CompositionId" asp-items="Model.WeightTypesNames">
+                            <option disabled selected class="font-weight-bold" value="-1">Выберите тип состава</option>
+                        </select>
+                    }
+                    <span class="cs-font-red cs-text-center" asp-validation-for="Box.Composition.WeightTypeId"></span>
+                </div>
+            </div>
+
+            <div class="cs-button-container cs-text-center">
+                <button type="submit" class="cs-btn cs-btn-primary">СОХРАНИТЬ</button>
+                <a class="cs-btn cs-btn-secondary" asp-page="/Admin/Boxes/Index">НАЗАД</a>
+            </div>
+
+            @section Scripts {
+                <script type="text/javascript" src="~/js/candyshop/box-edit.min.js" asp-append-version="true"></script>
+                <partial name="_ValidationScriptsPartial" />
+            }
+
+        </form>
+    </div>
+</div>
+

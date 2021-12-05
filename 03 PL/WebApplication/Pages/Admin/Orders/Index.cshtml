@@ -1,0 +1,73 @@
+﻿@page
+@model WebApplication.Pages.Admin.Orders.IndexModel
+@{
+    ViewData["Title"] = "Заказы";
+}
+
+<div class="cs-container-lg">
+    <div class="cs-admin cs-font-primary">
+        <h2 class="cs-text-center cs-admin-header cs-font-red cs-dashed">@ViewData["Title"]</h2>
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr class="admin-table__header-row">
+                    <td class="cs-admin-table-mobile-hidden">Номер заказа</td>
+                    <td>Покупатель</td>
+                    <td>Дата заказа</td>
+                    <td class="cs-admin-table-mobile-hidden">Сумма заказа</td>
+                    <td class="cs-admin-table-mobile-hidden">Кем создан?</td>
+                    <td>Номер счёта</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Orders.Any())
+                {
+                    <tr>
+                        <td class="text-danger text-center" colspan="7">Нет оформленных заказов.</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model.Orders)
+                    {
+                        var createdBy = item.CreatedBy == Belcukerkka.Models.Enums.OrderCreatedBy.User ? "Клиент" : "Менеджер";
+                        var invoiceNumber = item.InvoiceNumber == null ? "-" : item.InvoiceNumber.ToString();
+
+                        <tr class="admin-table__body-row">
+                            <td class="cs-admin-table-mobile-hidden">@item.Id</td>
+                            <td>@item.Customer.Name</td>
+                            <td>@item.Date.ToString("dd.MM.yyyy")</td>
+                            <td class="cs-admin-table-mobile-hidden">@(Math.Round(item.OrderItems.Sum(oi => (oi.Box.Price * oi.Amount)),2).ToString("0.00"))</td>
+                            <td class="cs-admin-table-mobile-hidden">@createdBy</td>
+                            <td>@invoiceNumber</td>
+                            <td>
+                                <div class="btn-toolbar" role="toolbar" aria-label="toolbar" style="justify-content: flex-end">
+                                    <div class="btn-group m-1" role="group" aria-label="button-section-1">
+                                        <a class="btn cs-btn cs-btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" 
+                                           title="Посмотреть детали заказа" asp-page="/Admin/Orders/ViewOrder" asp-route-Id="@item.Id">
+                                            <i class="bi bi-eye btn-icon"></i>
+                                        </a>
+                                        @*<a class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Редактировать заказ"
+                                               asp-page="/Admin/Orders/EditOrder" asp-route-Id="@item.Id">
+                                                <i class="bi bi-pencil btn-icon"></i>
+                                            </a>*@
+                                    </div>
+                                    <div class="btn-group m-1" role="group" aria-label="button-section-1">
+                                        <a class="btn cs-btn cs-btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+                                           title="Изменить номер документа" asp-page="/Admin/Orders/ChangeInvoiceNumber" asp-route-Id="@item.Id">
+                                            <i class="bi bi-pencil btn-icon"></i>
+                                        </a>
+                                        <a class="btn cs-btn cs-btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Печать документов"
+                                           asp-page="/Admin/Orders/Documents" asp-route-Id="@item.Id">
+                                            <i class="bi bi-file-text btn-icon"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

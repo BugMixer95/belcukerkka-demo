@@ -1,0 +1,45 @@
+﻿@page
+@model WebApplication.Pages.Admin.Orders.ViewOrderModel
+@{
+    ViewData["Title"] = "Просмотр заказа #" + Model.Order.Id;
+}
+
+<div class="cs-container-lg">
+    <div class="cs-admin cs-font-primary">
+        <h2 class="cs-text-center cs-admin-header cs-font-red cs-dashed">@ViewData["Title"]</h2>
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Название</th>
+                    <th>Тип состава</th>
+                    <th>Количество</th>
+                    <th>Цена</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    double total = 0;
+
+                    @foreach (var item in Model.Order.OrderItems)
+                    {
+                        <tr class="admin-table__body-row">
+                            <td>
+                                <a class="cs-link" asp-page="/Catalog/Item" asp-route-boxId="@item.BoxId">@item.Box.BoxParent.Name</a>
+                             </td>
+                            <td>@item.Box.Composition.WeightType.Name-@item.Box.Composition.Weight</td>
+                            <td>@item.Amount</td>
+                            <td>@(Math.Round((item.Amount * item.Box.Price), 2).ToString("0.00"))</td>
+                        </tr>
+
+                        total += item.Amount * item.Box.Price;
+                    }
+
+                    <tr>
+                        <td class="table-dark text-right" colspan="3">ИТОГО:</td>
+                        <td class="table-dark price-total" colspan="1">@Math.Round(total, 2).ToString("0.00")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

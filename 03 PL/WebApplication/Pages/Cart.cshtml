@@ -1,0 +1,161 @@
+﻿@page
+@model WebApplication.Pages.CartModel
+@{
+    ViewData["Title"] = "Корзина";
+}
+
+@section Canonical
+{
+    <link rel="canonical" href="https://belcukerkka.by/cart" />
+}
+
+@Html.AntiForgeryToken()
+
+<div class="cs-container">
+    <div class="cs-cart">
+        <div class="cs-cart-header cs-text-center">
+            <span class="cs-font-primary cs-font-lg cs-text-uppercase cs-dashed">Ваша корзина</span>
+        </div>
+        <div class="cs-header-skipper cs-single-product-candies__title cs-font-primary">
+            <span class="cs-font-lg-half">ТОВАРЫ</span>
+        </div>
+        <div class="cs-cart-products">
+            <div class="cs-cart-grid">
+                @{
+                    double total = 0;
+                    var items = Model.CartItems;
+                }
+
+                @if (Model.ItemsCount == 0)
+                {
+                    <div>
+                        <p class="cs-font-primary cs-text-center">
+                            Ваша корзина пуста. Перейдите в <a class="cs-link" asp-page="/Catalog/Index">Каталог</a>, чтобы добавить товары.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    @for (int i = 0; i < items.Count(); i++)
+                    {
+                        var fullPrice = ((double)items[i].Box.FullPrice).ToString("0.00");
+
+                        <div class="cs-cart-product">
+                            <img src="~/images/boxes/@items[i].Box.BoxParent.ImagePath" class="cs-cart-product__image" alt="image" asp-append-version="true">
+                            <div class="cs-cart-product__info">
+                                <p class="cs-font-primary cs-font-red">@items[i].Box.BoxParent.Name</p>
+                                <p class="cs-font-primary">Вес: @items[i].Box.Composition.Weight гр.</p>
+                                <p class="cs-font-primary">Состав: @items[i].Box.Composition.WeightType.Name</p>
+                            </div>
+                            <div class="cs-cart-product__quantity">
+                                <div class="spinner"></div>
+                                <div class="product-remove" id="icon-cross-@i"
+                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Убрать из корзины"></div>
+                                <p class="cs-font-primary">Количество:</p>
+                                <div class="cs-input-group">
+                                    <div class="cs-input-group-item">
+                                        <button type="button" class="cs-btn cs-btn-secondary cs-btn-minus" id="btn-minus-@i">
+                                            <i class="bi bi-dash-lg" id="icon-minus-@i"></i>
+                                        </button>
+                                        <input type="number" id="quantity-@i" class="cs-form-control input-number" aria-label="quantity"
+                                               value="@items[i].Amount" min="1" max="@int.MaxValue">
+                                        <button type="button" class="cs-btn cs-btn-secondary cs-btn-plus" id="btn-plus-@i">
+                                            <i class="bi bi-plus-lg" id="icon-plus-@i"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cs-cart-product__amount">
+                                <p class="cs-font-primary">Цена: <span class="cs-font-yellow">@items[i].Box.Price.ToString("0.00") руб.</span></p>
+                                <p class="cs-font-primary cs-font-sm"><del>(@fullPrice руб.)</del></p>
+                            </div>
+                            <div class="cs-cart-product__total">
+                                <p class="cs-font-primary cs-font-white" id="subtotal-@i">
+                                    Итого: @{ (items[i].Amount * items[i].Box.Price).ToString("0.00"); } руб.
+                                </p>
+                            </div>
+                        </div>
+
+                        total += items[i].Amount * items[i].Box.Price;
+                    }
+                }
+            </div>
+        </div>
+
+        @if (Model.ItemsCount != 0)
+        {
+            <div class="cs-cart-total">
+                <div class="cs-cart-total-text">
+                    <p class="cs-font-primary cs-font-lg-half cs-font-white">Итого за заказ: @total.ToString("0.00") руб.</p>
+                </div>
+            </div>
+        }
+
+        <div class="cs-header-skipper cs-single-product-candies__title cs-font-primary">
+            <span class="cs-font-lg-half">ОПЛАТА ЗАКАЗА</span>
+        </div>
+        <div class="cs-cart-customer-form">
+
+            <form method="post" asp-page-handler="Order">
+                <div class="cs-cart-form-grid">
+                    <div class="cs-cart-form-info-header">
+                        <p class="cs-font-primary cs-font-lg-half">Персональные данные</p>
+                    </div>
+                    <div class="cs-cart-form-info">
+                        <div class="cs-form-section">
+                            <div class="cs-form-subsection">
+                                <div>
+                                    <input type="radio" value="1" id="radio-individual" name="Customer.Type" asp-for="Customer.Type" checked
+                                           data-cs-radio="customer">
+                                    <label for="radio-individual" class="cs-font-primary">Физическое лицо</label>
+                                </div>
+                                <div>
+                                    <input type="radio" value="0" id="radio-legal" name="Customer.Type" asp-for="Customer.Type"
+                                           data-cs-radio="customer">
+                                    <label for="radio-legal" class="cs-font-primary">Юридическое лицо</label>
+                                </div>
+                            </div>
+                            <div class="cs-form-subsection">
+                                <label for="customer-name" class="cs-font-primary cs-required">ФИО</label>
+                                <input required type="text" class="cs-form-control" id="customer-name" autocomplete="off" asp-for="Customer.Name">
+                            </div>
+                            <div class="cs-form-subsection">
+                                <label for="customer-phone" class="cs-font-primary cs-required">Контактный телефон</label>
+                                <input required type="tel" class="cs-form-control" id="customer-phone" autocomplete="off" asp-for="Customer.Phone">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cs-cart-form-address">
+                        <div class="cs-form-section">
+                            <label for="customer-contact-person" class="cs-font-primary" style="display: none;">ФИО контактного лица</label>
+                            <input type="text" class="cs-form-control" id="customer-contact-person" autocomplete="off" asp-for="Customer.ContactPerson"
+                                   style="display: none;" />
+                            <label for="customer-address" class="cs-font-primary">Адрес</label>
+                            <textarea class="cs-form-control cs-cart-form-textarea" id="customer-address" asp-for="Customer.Address"></textarea>
+                        </div>
+                    </div>
+                    <div class="cs-cart-form-legal-header">
+                        <p class="cs-font-primary cs-font-lg-half">Данные юридического лица</p>
+                    </div>
+                    <div class="cs-cart-form-legal">
+                        <div class="cs-form-section">
+                            <label for="customer-legal-details" class="cs-font-primary">Реквизиты</label>
+                            <textarea class="cs-form-control cs-cart-form-textarea" id="customer-legal-details" asp-for="Customer.Details"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <button type="submit" class="cs-btn cs-btn-danger cs-font-white" id="submit-order"
+                            data-cs-tooltip="Итоговая сумма заказа должна быть не менее 300 рублей!">
+                        ОФОРМИТЬ ЗАКАЗ
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/candyshop/cart.min.js" asp-append-version="true"></script>
+}

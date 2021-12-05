@@ -1,0 +1,57 @@
+﻿@page
+@model WebApplication.Pages.Admin.Compositions.EditCandyModel
+@{
+    ViewData["Title"] = "Добавить сладость";
+    bool isEdit = Model.CandyInComposition.CandyId > 0;
+    int inputValue = isEdit ? Model.CandyInComposition.Amount : 1;
+}
+
+<div class="cs-container-lg">
+    <div class="cs-admin cs-font-primary">
+        <h2 class="cs-text-center cs-admin-header cs-font-red cs-dashed">@ViewData["Title"]</h2>
+        <form method="post" class="mt-3" enctype="multipart/form-data" asp-page-handler="OnPost">
+            <input hidden asp-for="CandyInComposition.CompositionId" />
+            <input hidden id="candy-id" asp-for="CandyInComposition.CandyId" />
+
+            <div class="cs-form">
+                <label class="cs-form-label cs-required">Сладость</label>
+                <select asp-for="CandyInComposition.CandyId" class="custom-select mr-sm-2"
+                        asp-items="Model.CandyNames" id="candy-select"
+                        disabled="@isEdit">
+                    <option class="font-weight-bold" disabled selected value="-1">Выберите конфету</option>
+                </select>
+                <label class="cs-form-label cs-required">Количество</label>
+                <input type="number" class="cs-form-control" id="candy-amount-input" min="1" value="@inputValue" asp-for="CandyInComposition.Amount" />
+            </div>
+
+            <div class="cs-button-container cs-text-center">
+                <button type="submit" class="cs-btn cs-btn-primary" id="submit-btn">СОХРАНИТЬ</button>
+                <a class="cs-btn cs-btn-danger" asp-page="/Admin/Compositions/Edit" asp-route-ID="@Model.CandyInComposition.CompositionId">НАЗАД</a>
+            </div>
+        </form>
+
+        @section Scripts
+{
+            <script>
+                $(document).ready(function () {
+                    if (@Model.CandyInComposition.Candy?.Id > 0) {
+                        $('#candy-id').val(@Model.CandyInComposition.Candy?.Id).text();
+                    };
+                });
+            </script>
+
+            <script>
+                $(document).ready(function () {
+                    $('#candy-select').on("change", function () {
+                        $('#candy-id').attr("value", $('#candy-select').val());
+                    });
+                });
+            </script>
+
+            <partial name="_ValidationScriptsPartial" />
+        }
+    </div>
+</div>
+
+
+

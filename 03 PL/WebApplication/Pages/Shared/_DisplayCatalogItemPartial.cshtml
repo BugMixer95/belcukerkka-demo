@@ -1,0 +1,34 @@
+﻿@model CatalogItemViewModel
+@{
+    string imagePath = "~/images/boxes/" + (Model.ImagePath ?? "noimage.jpg");
+}
+
+<div class="cs-product">
+    <div class="cs-product-header">
+        @{
+            var firstChild = Model.Children[0];
+        }
+        <a style="text-decoration: none" asp-page="/Catalog/Item"
+           asp-route-box="@firstChild.NameTransliterated" asp-route-weight="@Model.Weight" asp-route-boxId="@firstChild.ChildId">
+            <img src="@imagePath" alt="photo" class="cs-product-header__image" asp-append-version="true">
+            <div class="cs-product-header__title">
+                <span class="cs-font-primary">@Model.Name</span>
+            </div>
+            <div class="cs-product-header__weight">
+                <span class="cs-font-primary cs-dashed">@Model.Weight грамм</span>
+            </div>
+        </a>
+    </div>
+    <div class="cs-product-body">
+        @foreach (var child in Model.Children)
+        {
+            <a class="cs-product-links cs-font-primary" asp-page="/Catalog/Item"
+               asp-route-box="@child.NameTransliterated" asp-route-weight="@Model.Weight"
+               asp-route-boxId="@child.ChildId" asp-route-composition="@child.WeightTypeNameTransliterated">
+                <span class="cs-product-links__composition cs-font-primary">@child.WeightTypeName</span>
+                <span class="cs-product-links__price">@child.Price.ToString("0.00") руб.</span>
+                <span class="cs-product-links__full-price"><del>@child.FullPrice руб.</del></span>
+            </a>
+        }
+    </div>
+</div>

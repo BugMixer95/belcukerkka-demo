@@ -1,0 +1,119 @@
+﻿@page
+@model WebApplication.Pages.Admin.Compositions.EditModel
+@{
+    bool isEdit = Model.Composition.Id > 0;
+    string headerToShow = isEdit ? "Редактировать состав" : "Новый состав";
+    ViewData["Title"] = headerToShow;
+}
+
+<div class="cs-container-lg">
+    <div class="cs-admin cs-font-primary">
+        <h2 class="cs-text-center cs-admin-header cs-font-red cs-dashed">@ViewData["Title"]</h2>
+
+        <form method="post" class="mt-3" enctype="multipart/form-data" asp-page-handler="SaveComposition">
+            <input hidden asp-for="Composition.Id" />
+            <input hidden asp-for="Composition.WeightTypeId" id="weight-type-id" />
+
+            <div class="cs-form">
+                <label asp-for="Composition.WeightType" class="cs-form-label cs-required"></label>
+                <div>
+                    <select asp-for="Composition.WeightType" class="custom-select mr-sm-2"
+                            asp-items="Model.WeightTypeNames" id="weight-select">
+                        <option class="font-weight-bold" disabled selected value="-1">Выберите тип состава</option>
+                    </select>
+                    <span asp-validation-for="Composition.WeightType" class="cs-font-red"></span>
+                </div>
+                <label asp-for="Composition.Weight" class="cs-form-label cs-required"></label>
+                <div>
+                    <input type="number" asp-for="Composition.Weight" class="cs-form-control" placeholder="Введите вес состава">
+                    <span asp-validation-for="Composition.Weight" class="cs-font-red"></span>
+                </div>
+            </div>
+
+            <div class="cs-text-center">
+                <span class="cs-font-red">@Model.Notification</span>
+            </div>
+
+            <div class="cs-button-container cs-text-center">
+                <button type="submit" class="cs-btn cs-btn-primary" id="submit-btn">СОХРАНИТЬ</button>
+                <a asp-page="/Admin/Compositions/Index" class="cs-btn cs-btn-primary">НАЗАД</a>
+            </div>
+        </form>
+
+        @if (isEdit)
+        {
+            <div class="cs-header-skipper cs-single-product-candies__title">
+                <span class="cs-font-lg-half">КОНФЕТЫ В СОСТАВЕ</span>
+            </div>
+
+            <div class="cs-button-container cs-text-center mb-4">
+                <a class="cs-btn cs-btn-primary" asp-page="/Admin/Compositions/EditCandy" asp-route-CompositionID="@Model.Composition.Id">
+                    ДОБАВИТЬ СЛАДОСТЬ
+                </a>
+            </div>
+
+            <table class="table" id="candies-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Название</th>
+                        <th>Описание</th>
+                        <th>Количество</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Composition.Candies.Any())
+                    {
+                        <tr>
+                            <td colspan="5" class="cs-text-center cs-font-red">Данный состав не имеет конфет.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var item in Model.Composition.CandiesInComposition)
+                        {
+                            <tr>
+                                <td>@item.Candy.Name</td>
+                                <td>@item.Candy.Description</td>
+                                <td>@item.Amount</td>
+                                <td>
+                                    <a asp-page="/Admin/Compositions/EditCandy"
+                                       asp-route-CompositionID="@item.CompositionId"
+                                       asp-route-CandyID="@item.CandyId" class="cs-btn cs-btn-primary">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a asp-page="/Admin/Compositions/DeleteCandy"
+                                       asp-route-CompositionId="@item.CompositionId"
+                                       asp-route-CandyID="@item.CandyId" class="cs-btn cs-btn-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            if (@Model.Composition.WeightTypeId > 0) {
+                $('#weight-select').val(@Model.Composition.WeightTypeId).text();
+            };
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#weight-select').on("change", function () {
+                $('#weight-type-id').attr("value", $('#weight-select').val());
+            });
+        });
+    </script>
+
+    <partial name="_ValidationScriptsPartial" />
+}

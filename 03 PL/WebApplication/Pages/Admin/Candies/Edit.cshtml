@@ -1,0 +1,54 @@
+﻿@page
+@model WebApplication.Pages.Admin.Candies.EditModel
+@{
+    var header = Model.Candy.Id > 0 ? "Изменить сладость" : "Добавить сладость";
+    var imagePath = "~/images/candies/" + (Model.Candy.ImagePath ?? "noimage.jpg");
+    ViewData["Title"] = header;
+}
+
+<div class="cs-container-lg">
+    <div class="cs-admin cs-font-primary">
+        <h2 class="cs-text-center cs-admin-header cs-font-red cs-dashed">@ViewData["Title"]</h2>
+        <form method="post" enctype="multipart/form-data" autocomplete="off" list="autocomplete-off" asp-page-handler="OnPost">
+            <input hidden asp-for="Candy.Id" />
+            <input hidden asp-for="Candy.ImagePath" />
+
+            <div class="cs-form">
+                <label asp-for="Candy.Name" class="cs-form-label cs-required"></label>
+                <div>
+                    <input asp-for="Candy.Name" class="cs-form-control" placeholder="Название" autocomplete="off" />
+                    <span asp-validation-for="Candy.Name" class="text-danger"></span>
+                </div>
+
+                <label asp-for="Candy.Description" class="cs-form-label cs-required"></label>
+                <div>
+                    <textarea asp-for="Candy.Description" class="cs-form-control" placeholder="Описание"></textarea>
+                    <span asp-validation-for="Candy.Description" class="text-danger"></span>
+                </div>
+
+                <label asp-for="Image" class="cs-form-label"></label>
+                <div>
+                    <div class="custom-file">
+                        <input asp-for="Image" class="custom-file-input cs-form-control" />
+                        <label class="custom-file-label">Нажмите, чтобы выбрать изображение</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row" style="justify-content: center">
+                <img class="image-thumbnail" src="@imagePath" asp-append-version="true" />
+            </div>
+
+            <div class="cs-button-container cs-text-center">
+                <button type="submit" class="cs-btn cs-btn-primary">СОХРАНИТЬ</button>
+                <a class="cs-btn cs-btn-secondary" asp-page="/Admin/Candies/Index">НАЗАД</a>
+            </div>
+
+            @section Scripts {
+                <partial name="_ValidationScriptsPartial" />
+            }
+        </form>
+    </div>
+</div>
+
+

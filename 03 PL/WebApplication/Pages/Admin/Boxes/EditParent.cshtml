@@ -1,0 +1,58 @@
+﻿@page
+@model WebApplication.Pages.Admin.Boxes.EditParentModel
+@{
+    var isEdit = Model.BoxParent.Id > 0;
+    var header = isEdit ? "Изменить подарок" : "Новый подарок";
+    var imagePath = "~/images/boxes/" + (Model.BoxParent.ImagePath ?? "noimage.jpg");
+    ViewData["Title"] = header;
+}
+
+<div class="cs-container-lg">
+    <div class="cs-admin cs-font-primary">
+        <h2 class="cs-text-center cs-admin-header cs-font-red cs-dashed">@ViewData["Title"]</h2>
+        <form method="post" enctype="multipart/form-data" asp-page-handler="OnPost">
+            @if (isEdit)
+            {
+                <input hidden asp-for="BoxParent.Id" />
+                <input hidden asp-for="BoxParent.ImagePath" />
+            }
+
+            <div class="cs-form">
+                <label class="cs-form-label cs-required" asp-for="BoxParent.Name"></label>
+                <div>
+                    <input type="text" class="form-control" placeholder="Введите название подарка" autocomplete="off" asp-for="BoxParent.Name" />
+                    <span class="text-danger" asp-validation-for="BoxParent.Name"></span>
+                </div>
+                <label class="cs-form-label cs-required" asp-for="BoxParent.BoxPackage"></label>
+                <div>
+                    <select asp-for="BoxParent.BoxPackageId" class="cs-dropdown-select custom-select mr-sm-2"
+                            asp-items="Model.BoxPackageNames">
+                        <option class="font-weight-bold" disabled selected value="-1">Выберите тип упаковки</option>
+                    </select>
+                </div>
+                <label class="cs-form-label" asp-for="BoxParent.ImagePath"></label>
+                <div>
+                    <div class="custom-file">
+                        <input asp-for="Image" class="custom-file-input cs-form-control" />
+                        <label class="custom-file-label">Нажмите, чтобы выбрать изображение</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row" style="justify-content: center">
+                <img class="image-thumbnail" src="@imagePath" asp-append-version="true" />
+            </div>
+
+            <div class="cs-button-container cs-text-center">
+                <button type="submit" class="cs-btn cs-btn-primary">СОХРАНИТЬ</button>
+                <a class="cs-btn cs-btn-secondary" asp-page="/Admin/Boxes/Index">НАЗАД</a>
+            </div>
+
+            @section Scripts {
+                <partial name="_ValidationScriptsPartial" />
+            }
+
+        </form>
+    </div>
+</div>
+

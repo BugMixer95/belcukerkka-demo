@@ -1,0 +1,59 @@
+﻿@page
+@model WebApplication.Pages.Admin.Compositions.IndexModel
+@{
+    ViewData["Title"] = "Составы";
+}
+
+<div class="cs-container-lg">
+    <div class="cs-admin cs-font-primary">
+        <h2 class="cs-text-center cs-admin-header cs-font-red cs-dashed">@ViewData["Title"]</h2>
+        <div class="cs-text-center cs-admin-header">
+            <a class="cs-btn cs-btn-primary" asp-page="/Admin/Compositions/Edit">НОВЫЙ СОСТАВ</a>
+        </div>
+
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Тип состава</th>
+                    <th>Вес, гр.</th>
+                    <th class="text-right"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Compositions.Any())
+                {
+                    <tr>
+                        <td colspan="4" class="cs-text-center cs-font-red">У вас еще нет созданных составов.</td>
+                    </tr>
+                }
+
+                else
+                {
+                    @foreach (var item in Model.Compositions)
+                    {
+                        <tr>
+                            <td class="align-middle">@item.Id</td>
+                            <td class="align-middle">@item.WeightType.Name</td>
+                            <td class="align-middle">@item.Weight</td>
+                            <td class="text-right">
+                                <div class="btn-group" role="group" aria-label="buttons">
+                                    <a class="btn cs-btn cs-btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Редактировать"
+                                       asp-page="/Admin/Compositions/Edit" asp-route-ID="@item.Id">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a class="btn cs-btn cs-btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Удалить"
+                                       asp-page="/Admin/Compositions/Delete" asp-route-ID="@item.Id">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+

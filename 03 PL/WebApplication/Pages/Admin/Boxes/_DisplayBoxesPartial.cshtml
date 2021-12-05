@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Box>
+
+
+@if (Model.Any())
+{
+    <div>
+        <table class="table table-active">
+            <thead class="table-active">
+                <tr>
+                    <th style="width: 10%"></th>
+                    <th>Тип состава</th>
+                    <th>Цена</th>
+                    <th>Цена без скидки</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var box in Model)
+                {
+                    var fullPrice = ((double)box.FullPrice).ToString("0.00");
+
+                    <tr>
+                        <td></td>
+                        <td class="align-middle">@box.Composition.WeightType.Name-@box.Composition.Weight</td>
+                        <td class="align-middle">@box.Price.ToString("0.00")</td>
+                        <td class="align-middle">@fullPrice</td>
+                        <td>
+                            <div class="btn-toolbar" role="toolbar" aria-label="toolbar" style="justify-content: flex-end">
+                                <div class="btn-group m-1" role="group" aria-label="buttons">
+                                    <a class="btn cs-btn cs-btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Редактировать"
+                                       asp-page="/Admin/Boxes/EditChild" asp-route-BoxParentID="@box.BoxParentId" asp-route-ID="@box.Id">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a class="btn cs-btn cs-btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Удалить"
+                                       asp-page="/Admin/Boxes/DeleteChild" asp-route-ID="@box.Id">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+

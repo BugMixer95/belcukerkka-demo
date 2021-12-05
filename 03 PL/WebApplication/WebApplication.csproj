@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\01 DAL\Belcukerkka.Repositories\Belcukerkka.Repositories.csproj" />
+    <ProjectReference Include="..\..\02 BL\Belcukerkka.Extras\Belcukerkka.Services.csproj" />
+    <ProjectReference Include="..\..\02 BL\Belcukerkka.PdfGenerator\Belcukerkka.PdfGenerator.csproj" />
+    <ProjectReference Include="..\..\02 BL\Belcukerkka.TelegramNotifier\Belcukerkka.TelegramNotifier.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\icons\" />
+    <Folder Include="wwwroot\images\candies\" />
+    <Folder Include="wwwroot\pdf-docs\templates\" />
+  </ItemGroup>
+
+</Project>

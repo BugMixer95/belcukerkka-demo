@@ -1,0 +1,80 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Главная";
+
+    var index = new Random().Next(1, 4);
+    var image = "index_background_" + index + ".jpg";
+}
+
+@section Canonical
+{
+    <link rel="canonical" href="https://belcukerkka.by" />
+}
+
+@Html.AntiForgeryToken()
+<div class="cs-flex-container">
+    <div class="cs-welcome-block" style="background-image: url('../images/@image'); ">
+        <div class="cs-welcome-grid">
+            <div class="cs-timer cs-font-primary">
+                <div class="cs-timer__header">
+                    <p class="cs-font-lg cs-text-uppercase">Успей сделать жизнь слаще!</p>
+                    <p class="cs-font-lg-half">До нового года осталось:</p>
+                </div>
+                <div class="cs-timer__body">
+                    <p class="cs-timer__days">00</p>
+                    <p class="cs-timer__days-words cs-font-lg-half">дней</p>
+                </div>
+                <div class="cs-timer__footer cs-font-lg">
+                    <div class="timer-columns">
+                        <span class="cs-timer__hours">00</span>
+                        <span class="cs-timer__hours-words">часов</span>
+                    </div>
+                    <div class="timer-columns">
+                        <span class="cs-timer__minutes">00</span>
+                        <span class="cs-timer__minutes-words">минут</span>
+                    </div>
+                    <div class="timer-columns">
+                        <span class="cs-timer__seconds">00</span>
+                        <span class="cs-timer__seconds-words">секунд</span>
+                    </div>
+                </div>
+            </div>
+            <div class="cs-welcome__info cs-font-primary">
+                <p>Новогодние подарки 2022 для физических и юридических лиц!</p>
+                <p>
+                    Свяжитесь с нами:
+                    <br /><a href="#" class="cs-tel-link">+375 (XX) XXX-XX-XX</a> (МТС)
+                    <br /><a href="#" class="cs-tel-link">+375 (29) XXX-XX-XX</a> (А1)
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="cs-index-container">
+        <div class="cs-header-skipper cs-index-skipper cs-single-product-candies__title cs-font-primary cs-font-lg">
+            <span>ТОП ТОВАРОВ</span>
+        </div>
+        <div class="cs-index-weights">
+            @foreach (var item in Model.AvailableWeights)
+            {
+                var isDisabled = item == 1000 ? "disabled" : "";
+                <div class="cs-font-primary cs-font-lg-half" id="index-weight-@item" @isDisabled>@item грамм</div>
+            }
+        </div>
+        <div class="cs-index-product-grid" id="catalog">
+            @foreach (var item in Model.CatalogItems)
+            {
+                <partial name="_DisplayCatalogItemPartial" model="item" view-data="ViewData" />
+            }
+        </div>
+
+        <div class="cs-index-button">
+            <a class="cs-btn cs-btn-danger cs-text-center" asp-page="/Catalog/Index">ПЕРЕЙТИ В КАТАЛОГ</a>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/candyshop/main.min.js" asp-append-version="true"></script>
+}

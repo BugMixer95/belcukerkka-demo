@@ -1,0 +1,115 @@
+﻿@page
+@using Belcukerkka.PdfGenerator
+@model WebApplication.Pages.Admin.Orders.DocumentsModel
+@{
+    ViewData["Title"] = "Печать документов для заказа #" + Model.Order.Id;
+}
+
+<div class="cs-container-lg">
+    <div class="cs-admin cs-font-primary">
+        <h2 class="cs-text-center cs-admin-header cs-font-red cs-dashed">@ViewData["Title"]</h2>
+        <form method="post">
+            <input hidden asp-for="Order.Id" />
+
+            <div class="cs-form cs-doc-form">
+                <label class="cs-form-label">Реквизиты (из заказа)</label>
+                <div>
+                    <textarea readonly type="text" class="cs-form-control" placeholder="@Model.Order.Customer.Details">@Model.Order.Customer.Details</textarea>
+                </div>
+                <label class="cs-form-label">Номер документа</label>
+                <div>
+                    <input disabled type="text" class="cs-form-control" value="@Model.Order.InvoiceNumber" />
+                </div>
+                <label asp-for="DateAsString" class="cs-form-label cs-required"></label>
+                <div>
+                    <input type="text" class="cs-form-control" asp-for="DateAsString" placeholder="Введите дату в формате ДД/ММ/ГГГГ" />
+                    <span asp-validation-for="DateAsString" class="cs-text-center cs-font-red"></span>
+                </div>
+                <label asp-for="DocumentRequestModel.DocumentType" class="cs-form-label cs-required"></label>
+                <div>
+                    <select asp-for="DocumentRequestModel.DocumentType" class="custom-select mr-sm-2"
+                            asp-items="Html.GetEnumSelectList<DocumentType>()" id="document-type-select">
+                        <option class="font-weight-bold" disabled selected value="-1">Выберите тип документа</option>
+                    </select>
+                    <span asp-validation-for="DocumentRequestModel.DocumentType" class="cs-text-center cs-font-red"></span>
+                </div>
+                <label asp-for="DocumentRequestModel.LegalEntity" class="cs-form-label cs-required"></label>
+                <div>
+                    <select asp-for="DocumentRequestModel.LegalEntity" class="custom-select mr-sm-2"
+                            asp-items="Html.GetEnumSelectList<LegalEntity>()" id="legal-entity-select">
+                        <option class="font-weight-bold" disabled selected value="-1">Выберите организацию</option>
+                    </select>
+                    <span asp-validation-for="DocumentRequestModel.LegalEntity" class="cs-text-center cs-font-red"></span>
+                </div>
+
+                <label class="cs-form-label cs-doc-form-hidden cs-doc-1 cs-doc-3" asp-for="DocumentRequestModel.IsSignatureNeeded">Факсимиле</label>
+                <div class="cs-doc-form-hidden cs-doc-1 cs-doc-3">
+                    <input type="checkbox" class="cs-checkbox" asp-for="DocumentRequestModel.IsSignatureNeeded" 
+                           value="false" onchange="this.value = this.checked" />
+                </div>
+
+                <label class="cs-form-label cs-required cs-doc-form-hidden cs-doc-1" asp-for="DocumentRequestModel.CustomerInfo"></label>
+                <div class="cs-doc-form-hidden cs-doc-1">
+                    <textarea type="text" class="cs-form-control" asp-for="DocumentRequestModel.CustomerInfo"
+                              placeholder="Введите реквизиты заказчика"></textarea>
+                    <span asp-validation-for="DocumentRequestModel.CustomerInfo" class="cs-text-center cs-font-red"></span>
+                </div>
+
+                <label class="cs-form-label cs-doc-form-hidden cs-doc-2" asp-for="DocumentRequestModel.IsAppendixNeeded">Дополнительные секции</label>
+                <div class="cs-doc-form-hidden cs-doc-2">
+                    <input type="checkbox" class="cs-checkbox" asp-for="DocumentRequestModel.IsAppendixNeeded" value="false"
+                           onchange="this.value = this.checked" />
+                    <div class="cs-hint" data-bs-toggle="tooltip" data-bs-placement="top"
+                         title="Если выбрано, то коммерческое предложение будет содержать приложения с составом каждого подарка, входящего в заказ"></div>
+                </div>
+
+                <label class="cs-form-label cs-required cs-doc-form-hidden cs-doc-3" asp-for="DocumentRequestModel.ContractTerms.ContractCustomerCompany"></label>
+                <div class="cs-doc-form-hidden cs-doc-3">
+                    <input type="text" class="cs-form-control" asp-for="DocumentRequestModel.ContractTerms.ContractCustomerCompany"
+                           placeholder="Введите наименование заказчика" />
+                    <span asp-validation-for="DocumentRequestModel.ContractTerms.ContractCustomerCompany" class="cs-text-center cs-font-red"></span>
+                </div>
+
+                <label class="cs-form-label cs-required cs-doc-form-hidden cs-doc-3" asp-for="DocumentRequestModel.ContractTerms.ContractCustomerName"></label>
+                <div class="cs-doc-form-hidden cs-doc-3">
+                    <input type="text" class="cs-form-control" asp-for="DocumentRequestModel.ContractTerms.ContractCustomerName"
+                           placeholder="Введите ФИО представителя (в родительном падеже), напр. Иванова Ивана Ивановича" />
+                    <span asp-validation-for="DocumentRequestModel.ContractTerms.ContractCustomerName" class="cs-text-center cs-font-red"></span>
+                </div>
+
+                <label class="cs-form-label cs-required cs-doc-form-hidden cs-doc-3" asp-for="DocumentRequestModel.ContractTerms.ContractBasedOn"></label>
+                <div class="cs-doc-form-hidden cs-doc-3">
+                    <input type="text" class="cs-form-control" asp-for="DocumentRequestModel.ContractTerms.ContractBasedOn"
+                           placeholder="Введите документ-основание" />
+                    <span asp-validation-for="DocumentRequestModel.ContractTerms.ContractBasedOn" class="cs-text-center cs-font-red"></span>
+                </div>
+
+                <label class="cs-form-label cs-required cs-doc-form-hidden cs-doc-3" asp-for="DocumentRequestModel.ContractTerms.ContractSupplyDate"></label>
+                <div class="cs-doc-form-hidden cs-doc-3">
+                    <input type="text" class="cs-form-control" asp-for="DocumentRequestModel.ContractTerms.ContractSupplyDate"
+                           placeholder="Введите дату поставки, напр. с 10.12.2021г. по 22.12.2021г." />
+                    <span asp-validation-for="DocumentRequestModel.ContractTerms.ContractSupplyDate" class="cs-text-center cs-font-red"></span>
+                </div>
+
+                <label class="cs-form-label cs-required cs-doc-form-hidden cs-doc-3" asp-for="DocumentRequestModel.ContractTerms.ContractPaymentTerms"></label>
+                <div class="cs-doc-form-hidden cs-doc-3">
+                    <textarea type="text" class="cs-form-control" asp-for="DocumentRequestModel.ContractTerms.ContractPaymentTerms"
+                              placeholder="Введите условия оплаты"></textarea>
+                    <span asp-validation-for="DocumentRequestModel.ContractTerms.ContractPaymentTerms" class="cs-text-center cs-font-red"></span>
+                </div>
+            </div>
+
+            <div class="cs-button-container cs-text-center">
+                <button id="btn-pdf" class="btn btn-info" type="submit">СГЕНЕРИРОВАТЬ ДОКУМЕНТ</button>
+            </div>
+
+        </form>
+
+        @section Scripts
+        {
+            <script type="text/javascript" src="~/js/candyshop/document.min.js" asp-append-version="true"></script>
+            <partial name="_ValidationScriptsPartial" />
+        }
+    </div>
+</div>
+

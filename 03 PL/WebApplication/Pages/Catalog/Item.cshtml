@@ -1,0 +1,103 @@
+﻿@page
+@model WebApplication.Pages.Catalog.ItemModel
+@{
+    var imagePath = "~/images/boxes/" + (Model.Box.BoxParent.ImagePath ?? "noimage.jpg");
+    ViewData["Title"] = Model.Box.BoxParent.Name + ", " + Model.Box.Composition.Weight + " гр.";
+
+    var fullPrice = ((double)Model.Box.FullPrice).ToString("0.00");
+}
+
+<div class="cs-container">
+    <div class="cs-single-product">
+        <div class="cs-single-product__title cs-text-center">
+            <span class="cs-font-primary cs-font-xl cs-dashed">@Model.Box.BoxParent.Name</span>
+        </div>
+        <div class="cs-single-product-grid">
+            <img src="@imagePath" class="cs-single-product__image" asp-append-version="true">
+
+            <div class="cs-single-product__info">
+                <p class="cs-font-primary cs-font-lg cs-font-red">Информация о товаре</p>
+                <p class="cs-font-primary">Вес: @Model.Box.Composition.Weight грамм</p>
+                <span class="cs-font-primary">Цена: </span>
+                <span class="cs-font-primary cs-font-red">@Model.Box.Price.ToString("0.00") руб.</span>
+                <span class="cs-font-primary cs-font-sm"><del>(@fullPrice руб.)</del></span>
+            </div>
+
+            <div class="cs-single-product__compositions">
+                <p class="cs-font-primary cs-font-lg cs-font-red">Состав подарка:</p>
+                <div class="cs-button-container-inline">
+                    @foreach (var item in Model.CatalogItemModel.Children)
+                    {
+                        if (item.ChildId != Model.Box.Id)
+                        {
+                            <a class="cs-btn cs-btn-primary" asp-page="/Catalog/Item"
+                               asp-route-box="@item.NameTransliterated" asp-route-weight="@Model.Box.Composition.Weight"
+                               asp-route-boxId="@item.ChildId" asp-route-composition="@item.WeightTypeNameTransliterated">
+                                @item.WeightTypeName.ToUpperInvariant()
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="cs-btn cs-btn-primary" disabled>
+                                @item.WeightTypeName.ToUpperInvariant()
+                            </a>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="cs-single-product__cart">
+                <form method="post" asp-page="/Cart" asp-page-handler="AddToCart" asp-route-boxId="@Model.Box.Id">
+                    <div class="cs-input-group">
+                        <div class="cs-input-group-item">
+                            <button type="button" class="cs-btn cs-btn-secondary cs-btn-minus">
+                                <i class="bi bi-dash-lg"></i>
+                            </button>
+                            <input type="number" id="quantity-0" class="cs-form-control input-number" aria-label="quantity" value="1"
+                                   min="1" max="@int.MaxValue" asp-for="Amount">
+                            <button type="button" class="cs-btn cs-btn-secondary cs-btn-plus">
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+                        </div>
+                        <div class="cs-input-group-item">
+                            <button type="submit" class="cs-btn cs-btn-danger">ДОБАВИТЬ В КОРЗИНУ</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="cs-single-product-candies">
+            <div class="cs-single-product-candies__title cs-font-primary cs-font-lg-half">
+                <span>КОНФЕТЫ В <br /> ПОДАРКЕ</span>
+            </div>
+            <div class="cs-single-product-candies__grid">
+                @{
+                    var candies = Model.Box.Composition.Candies
+                        .OrderByDescending(c => c.Name.StartsWith("Шоколад"))
+                        .ThenBy(c => c.Name);
+                }
+
+                @foreach (var item in candies)
+                {
+                    var quantity = item.CandyInCompositions
+                        .FirstOrDefault(cic => cic.CandyId == item.Id && cic.CompositionId == Model.Box.Composition.Id)
+                        .Amount;
+
+                    <div class="cs-candy">
+                        <img src="~/images/candies/@item.ImagePath" class="cs-candy-image" asp-append-version="true">
+                        <div class="cs-candy-info">
+                            <p class="cs-font-primary cs-font-lg-half cs-font-red">@item.Name</p>
+                            <p class="cs-font-primary">@item.Description</p>
+                        </div>
+                        <div class="cs-candy-quantity сs-font-primary cs-font-red">@quantity шт.</div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

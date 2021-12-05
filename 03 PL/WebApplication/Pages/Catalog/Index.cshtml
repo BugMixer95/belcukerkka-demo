@@ -1,0 +1,86 @@
+﻿@page
+@model WebApplication.Pages.Catalog.IndexModel
+@{
+    ViewData["Title"] = "Каталог";
+
+    string isFiltered = (bool)ViewData["IsFiltered"] ? "checked" : "";
+    bool noResults = Model.CatalogItems.Count() == 0;
+}
+
+@section Canonical
+{
+    <link rel="canonical" href="https://belcukerkka.by/catalog" />
+}
+
+@Html.AntiForgeryToken()
+
+<div class="cs-container">
+    <form method="get">
+        <input type="checkbox" hidden disabled class="filter-toggle" title="filter-toggle" @isFiltered>
+        <div class="cs-filter-section">
+            <label class="cs-filter-label cs-font-primary">Вес подарка:</label>
+            <div class="cs-filter-weight">
+                @{
+                    var arr = (int[])ViewData["WeightsFilter"];
+                    string isChecked = string.Empty;
+                }
+
+                @for (int i = 0; i < Model.AvailableWeights.Count(); i++)
+                {
+                    if (arr != null)
+                        isChecked = arr.Contains(Model.AvailableWeights.ElementAt(i)) ? "checked" : "";
+
+                    <div class="cs-filter-weight-item">
+                        <input type="checkbox" class="cs-checkbox" id="checkbox-weight-@Model.AvailableWeights.ElementAt(i)"
+                               value="@Model.AvailableWeights.ElementAt(i)" name="weights" @isChecked>
+                        <label class="cs-filter-weight-item__label cs-font-primary" for="checkbox-weight-@Model.AvailableWeights.ElementAt(i)">
+                            @Model.AvailableWeights.ElementAt(i)
+                        </label>
+                    </div>
+                }
+            </div>
+            <label class="cs-filter-label cs-font-primary">Цена:</label>
+            <div class="cs-filter-price">
+                <span class="cs-filter-price__text cs-font-primary">от</span>
+                <input type="number" step="any" name="minPrice" class="cs-filter-price__min cs-form-control input-decimal"
+                       placeholder="@Model.MinPrice" value="@ViewData["MinPriceFilter"]">
+                <span class="cs-filter-price__text cs-font-primary">до</span>
+                <input type="number" step="any" name="maxPrice" class="cs-filter-price__max cs-form-control input-decimal"
+                       placeholder="@Model.MaxPrice" value="@ViewData["MaxPriceFilter"]" />
+            </div>
+            <div class="cs-button-container">
+                <button class="cs-btn cs-btn-primary filter-submit" type="submit">ПРИМЕНИТЬ ФИЛЬТРЫ</button>
+                <a class="cs-btn cs-btn-primary filter-reset" asp-page="/Catalog/Index">СБРОСИТЬ ФИЛЬТРЫ</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="cs-product-grid" id="catalog">
+    @foreach (var item in Model.CatalogItems)
+    {
+        <partial name="_DisplayCatalogItemPartial" model="item" view-data="ViewData" />
+    }
+    <span id="product-border" style="display: none"></span>
+</div>
+
+@if (noResults)
+{
+    <div class="cs-filter-no-results">
+        <p class="cs-font-red cs-font-primary">По Вашему запросу ничего не найдено. Пожалуйста, измените критерии фильтрации.</p>
+    </div>
+}
+
+@if (!Model.EveryItemIsLoaded)
+{
+    <div class="cs-container">
+        <div class="cs-button-container cs-button-container-bottom">
+            <button class="cs-btn cs-btn-danger" id="load-more">ЕЩЁ ТОВАРЫ</button>
+        </div>
+    </div>
+}
+
+@section Scripts
+{
+    <script src="~/js/candyshop/catalog.min.js" asp-append-version="true"></script>
+}

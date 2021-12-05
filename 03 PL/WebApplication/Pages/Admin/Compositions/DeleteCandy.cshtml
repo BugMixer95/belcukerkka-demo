@@ -1,0 +1,17 @@
+﻿@page
+@model WebApplication.Pages.Admin.Compositions.DeleteCandyModel
+@{
+    ViewData["Title"] = "Удалить сладость";
+}
+
+<div class="cs-container-sm">
+    <div class="cs-admin cs-font-primary">
+        <h2 class="cs-text-center cs-admin-header cs-font-red cs-dashed">@ViewData["Title"] из состава?</h2>
+        <div class="cs-text-center">
+            <form method="post">
+                <button class="cs-btn cs-btn-danger">УДАЛИТЬ</button>
+                <a class="cs-btn cs-btn-secondary" asp-page="/Admin/Compositions/Edit" asp-route-id="@Model.CompositionId">НАЗАД</a>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+.image-thumbnail {
+    height: 200px;
+    width: auto;
+}
+
+.hidden-row {
+    padding: 0 !important;
+}
+
+.btn-icon {
+    color: #ffffff;
+}
+
+tr.admin-table__body-row td {
+    vertical-align: middle;
+}
+
+/* Chrome, Safari, Edge, Opera */ 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}

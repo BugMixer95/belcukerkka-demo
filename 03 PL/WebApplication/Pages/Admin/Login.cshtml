@@ -1,0 +1,23 @@
+﻿@page
+@model WebApplication.Pages.Admin.LoginModel
+@{
+    ViewData["Title"] = "Вход";
+    bool isAuthorized = User.Identity.IsAuthenticated;
+}
+
+<div class="cs-container-sm">
+    <div class="cs-form-container">
+        <form method="post">
+            <span class="cs-form-login-title cs-font-primary cs-font-lg cs-dashed">Войти в систему</span>
+            <div class="cs-form-login">
+                <label for="login" class="cs-form-label cs-font-primary">Логин</label>
+                <input type="text" class="cs-form-control" id="login" asp-for="LoginViewModel.LoginName" />
+                <label for="password" class="cs-form-label cs-font-primary">Пароль</label>
+                <input type="password" class="cs-form-control" id="password" asp-for="LoginViewModel.Password" />
+            </div>
+            <div class="cs-button-container">
+                <button type="submit" class="cs-btn cs-btn-primary" asp-page-handler="Login">ВОЙТИ</button>
+            </div>
+        </form>
+    </div>
+</div>
